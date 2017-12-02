@@ -8,7 +8,8 @@ public class PlayerController : MonoBehaviour
     public float RotationSpeed = 10.0f;
     public Transform BulletObject;
     public float MovementSpeed = 10.0f;
-
+    public int BulletLevel = 1;
+    public float DispersionAngle = 20f;
     public float ShotDelay = 1.0f;
 
     private float shotTimer = 0;
@@ -48,13 +49,42 @@ public class PlayerController : MonoBehaviour
     void Shoot()
     {
         // fire bullets
-        SpawnBullet();
+        GenerateBulletSpray();
 
     }
 
-    Transform SpawnBullet()
+    void SpawnForwardBullet()
     {
         // this should become part of the objectPooler
-        return Instantiate(BulletObject, transform.position + Vector3.up, transform.rotation);
+        Instantiate(BulletObject, transform.position + Vector3.up, transform.rotation);
+    }
+
+    void GenerateBulletSpray()
+    {
+        if (BulletLevel == 1)
+        {
+            SpawnForwardBullet();
+        }
+        else
+        {
+            var counterStart = 0;
+            if (BulletLevel % 2 != 0)
+            {
+                SpawnForwardBullet();
+                counterStart++;
+            }
+            var bullets = BulletLevel - counterStart;
+            var startAngle = 0f - (bullets / 2.0f * DispersionAngle);
+            for (int loop = 0; loop < bullets; loop++)
+            {
+                var bullet = Instantiate(BulletObject, transform.position + Vector3.up, transform.rotation);
+                if (startAngle > -0.1f && startAngle <=0.1f)
+                {
+                    startAngle += DispersionAngle;
+                }
+                bullet.eulerAngles += Vector3.forward * startAngle;
+                startAngle += DispersionAngle;
+            }
+        }
     }
 }

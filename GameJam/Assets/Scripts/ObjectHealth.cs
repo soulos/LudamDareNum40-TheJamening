@@ -9,7 +9,7 @@ public class ObjectHealth : MonoBehaviour
 
     public int MaxHealth = 100;
 
-    private int currentHealth = 100;
+    private float currentHealth = 100;
 
     public float DamageReduction = 0;
     
@@ -19,12 +19,8 @@ public class ObjectHealth : MonoBehaviour
 	    currentHealth = MaxHealth;
 	}
 	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-    void OnCollisionEnter(Collision col)
+    void OnCollisionEnter2D(Collision2D col)
     {
         if (col.collider.gameObject.layer == LayerMask.NameToLayer("Bullet"))
         {
@@ -34,11 +30,11 @@ public class ObjectHealth : MonoBehaviour
             {
                 
                 var damage = DamageReduction * proj.Damage;
-                currentHealth -= (int)damage;
+                currentHealth -= (int)damage * DamageReduction;
                 var reflectiveObject = gameObject.GetComponent<ReflectiveObject>();
                 if (reflectiveObject != null)
                 {
-                    reflectiveObject.Reflect(col.relativeVelocity, proj);
+                    reflectiveObject.Reflect(col.contacts[0], col.collider.transform);
                 }
                 if (currentHealth <= 0)
                 {
