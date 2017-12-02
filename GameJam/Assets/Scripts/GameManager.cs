@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Assets.Scripts;
@@ -10,18 +11,21 @@ public class GameManager : MonoBehaviour
 
     private static GameState currentState = GameState.Startup;
 
+    private BoardManager BoardScript;
+
     void Awake()
     {
         DontDestroyOnLoad(this);
+        this.BoardScript = this.GetComponent<BoardManager>();
     }
+
 	// Use this for initialization
 	void Start () {
-
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
+        this.BoardScript.GenerateFloor();
+    }
+    
+    // Update is called once per frame
+    void Update () {
 
         
 		
