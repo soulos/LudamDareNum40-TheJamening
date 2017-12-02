@@ -7,7 +7,7 @@ public class Projectile : MonoBehaviour
 {
 
     public float Speed = 10;
-
+    public float Damage = 10;
     public float LifespanInSeconds = 5f;
     private bool isDead = false;
 
