@@ -8,6 +8,10 @@ public class PlayerController : MonoBehaviour
     public float RotationSpeed = 10.0f;
     public Transform BulletObject;
     public float MovementSpeed = 10.0f;
+
+    public float ShotDelay = 1.0f;
+
+    private float shotTimer = 0;
 	// Use this for initialization
 	void Start () {
 		
@@ -21,6 +25,12 @@ public class PlayerController : MonoBehaviour
 	    bool shoot = Input.GetButton("Fire1");
 	    RotatePlayer(rotation);
 	    MovePlayer(movement);
+	    shotTimer += Time.deltaTime;
+	    if (shoot && shotTimer > ShotDelay)
+	    {
+	        shotTimer = 0;
+            Shoot();
+	    }
 	}
 
     void RotatePlayer(float rotation)
