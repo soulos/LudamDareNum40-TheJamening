@@ -64,5 +64,43 @@ public class GameManager : MonoBehaviour
         
 
     }
+
+    public void NewGame()
+    {
+        ChangeState(GameState.StartGame);
+    }
+
+    public void About()
+    {
+        // show the about Panel
+        GameObject.Find("MainPanel").SetActive(false);
+        GameObject.Find("AboutPanel").SetActive(true);
+
+    }
+
+    public void BackButton()
+    {
+        // if on highscore load main menu
+        if (currentState == GameState.ShowHighscores)
+        {
+            SceneManager.LoadScene("Startup");
+        }
+        // otherwise show main panel
+        GameObject.Find("MainPanel").SetActive(true);
+        GameObject.Find("AboutPanel").SetActive(false);
+    }
+
+    public void HighScores()
+    {
+        ChangeState(GameState.ShowHighscores);
+    }
+
+    public void QuitGame()
+    {
+        // Scream
+        // Belch
+        // Show blood
+        Application.Quit();
+    }
     
 }

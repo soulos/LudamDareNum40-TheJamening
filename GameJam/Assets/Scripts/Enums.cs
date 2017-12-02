@@ -16,5 +16,6 @@ namespace Assets.Scripts
         DiedAlcohol,
         DiedZombie,
         GotHighscore,
+        ShowHighscores
     }
 }
