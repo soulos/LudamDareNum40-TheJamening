@@ -12,13 +12,13 @@ public class ObjectHealth : MonoBehaviour
     private float currentHealth = 100;
 
     public float DamageReduction = 0;
-    
-	// Use this for initialization
-	void Start ()
-	{
-	    currentHealth = MaxHealth;
-	}
-	
+
+    // Use this for initialization
+    void Start()
+    {
+        currentHealth = MaxHealth;
+    }
+
 
     void OnCollisionEnter2D(Collision2D col)
     {
@@ -26,12 +26,11 @@ public class ObjectHealth : MonoBehaviour
         {
             // take damage from bullet
             Projectile proj = col.collider.gameObject.GetComponent<Projectile>();
-            if (proj!= null)
+            if (proj != null)
             {
-                
+
                 var damage = DamageReduction * proj.Damage;
                 currentHealth -= (int)damage * DamageReduction;
-                
                 var reflectiveObject = gameObject.GetComponent<ReflectiveObject>();
                 if (reflectiveObject != null)
                 {
@@ -69,7 +68,7 @@ public class ObjectHealth : MonoBehaviour
         {
             // take damage from zombies
         }
-    
+
     }
 
     public float HealthPercent()
