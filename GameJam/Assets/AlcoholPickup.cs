@@ -18,11 +18,16 @@ public class AlcoholPickup : MonoBehaviour
         if (col.collider.gameObject.layer == LayerMask.NameToLayer("Bullet"))
         {
             // make explode
+            ObjectPoolingManager.GetGameObject(ExplosionPoolName, transform.position, Quaternion.identity);
+            ObjectPoolingManager.DestroyPooledObject(PoolName,transform);
         }
         else if (col.collider.gameObject.CompareTag("Player"))
         {
             // drink
-            
+            ObjectPoolingManager.DestroyPooledObject(PoolName, transform);
+            // increase health
+            // increase alcohol
+
         }
     }
 }

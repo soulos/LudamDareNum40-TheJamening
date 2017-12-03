@@ -31,6 +31,7 @@ public class ObjectHealth : MonoBehaviour
                 
                 var damage = DamageReduction * proj.Damage;
                 currentHealth -= (int)damage * DamageReduction;
+                
                 var reflectiveObject = gameObject.GetComponent<ReflectiveObject>();
                 if (reflectiveObject != null)
                 {
@@ -52,7 +53,6 @@ public class ObjectHealth : MonoBehaviour
                         else if (gameObject.CompareTag("Enemy"))
                         {
                            gameObject.GetComponent<EnemyDie>().Die();
-
                         }
                     }
                 }
