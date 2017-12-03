@@ -32,7 +32,7 @@ public class ObjectHealth : MonoBehaviour
                 var damage = DamageReduction * proj.Damage;
                 currentHealth -= (int)damage * DamageReduction;
                 var reflectiveObject = gameObject.GetComponent<ReflectiveObject>();
-                if (reflectiveObject != null)
+                if (reflectiveObject != null && col.contacts.Length > 0)
                 {
                     reflectiveObject.Reflect(col.contacts[0], col.collider.transform);
                 }
@@ -47,7 +47,7 @@ public class ObjectHealth : MonoBehaviour
                     {
                         GameManager.ChangeState(GameState.DiedBullet);
                     }
-                    else if (gameObject.CompareTag("Enemy"))
+                    else if (gameObject.CompareTag("Enemy") || gameObject.CompareTag("EnemySpawner"))
                     {
                         gameObject.GetComponent<EnemyDie>().Die();
                     }
