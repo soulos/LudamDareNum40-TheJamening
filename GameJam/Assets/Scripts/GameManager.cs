@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
 
     private BoardManager BoardScript;
 
+    private static int currentScore = 0;
+
     void Awake()
     {
         DontDestroyOnLoad(this);
@@ -31,6 +33,15 @@ public class GameManager : MonoBehaviour
 		
 	}
 
+    public static void UpdateScore(int points)
+    {
+        currentScore += points;
+    }
+
+    public static int GetCurrentScore()
+    {
+        return currentScore;
+    }
     public static void ChangeState(GameState newState)
     {
         
@@ -49,6 +60,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.StartGame:
                 SceneManager.LoadScene("Level1");
+                currentScore = 0;
                 break;
             case GameState.DiedAlcohol:
                 SceneManager.LoadScene("DeadDrunk");

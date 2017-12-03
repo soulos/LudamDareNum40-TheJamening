@@ -27,7 +27,7 @@ public class ZombieSpawner : MonoBehaviour
     {
         // pick a random direction and spit the item out
         Vector3 spawnPoint = GetRandomPoint();
-        ObjectPoolingManager.GetGameObject(ZombieSpawnerName, transform.position + spawnPoint, Quaternion.identity);
+        ObjectPoolingManager.GetGameObject(ZombieSpawnerName, transform.position + spawnPoint, Quaternion.AngleAxis(0,Vector3.forward));
 
     }
 
