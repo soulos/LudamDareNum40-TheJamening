@@ -209,9 +209,9 @@ GameObject:
   - component: {fileID: 4683187681222882}
   - component: {fileID: 114363541872058970}
   - component: {fileID: 50088600848632134}
-  - component: {fileID: 61961553344014676}
   - component: {fileID: 114981204080916154}
-  m_Layer: 0
+  - component: {fileID: 58923749954797336}
+  m_Layer: 13
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -351,8 +351,8 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!61 &61961553344014676
-BoxCollider2D:
+--- !u!58 &58923749954797336
+CircleCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
@@ -363,19 +363,9 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.05017686, y: 0.08210182}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
+  m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Size: {x: 2.1355824, y: 1.0268517}
-  m_EdgeRadius: 0
+  m_Radius: 0.8
 --- !u!81 &81490972981069978
 AudioListener:
   m_ObjectHideFlags: 1
@@ -538,6 +528,7 @@ MonoBehaviour:
   BulletLevel: 1
   DispersionAngle: 20
   ShotDelay: 0.5
+  health: {fileID: 114981204080916154}
 --- !u!114 &114396963787964086
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -718,6 +709,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 100
+  MaxAlcohol: 100
   DamageReduction: 1
 --- !u!114 &114995909886569262
 MonoBehaviour:
