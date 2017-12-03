@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
     void SpawnForwardBullet()
     {
         // this should become part of the objectPooler
-        Instantiate(BulletObject, transform.position + Vector3.up, transform.rotation);
+        ObjectPoolingManager.GetGameObject("Bullets", transform.position + Vector3.up, transform.rotation);
     }
 
     void GenerateBulletSpray()
@@ -77,13 +77,16 @@ public class PlayerController : MonoBehaviour
             var startAngle = 0f - (bullets / 2.0f * DispersionAngle);
             for (int loop = 0; loop < bullets; loop++)
             {
-                var bullet = Instantiate(BulletObject, transform.position + Vector3.up, transform.rotation);
-                if (startAngle > -0.1f && startAngle <=0.1f)
+                var bullet = ObjectPoolingManager.GetGameObject("Bullets", transform.position + Vector3.up, transform.rotation);
+                if (bullet != null)
                 {
+                    if (startAngle > -0.1f && startAngle <= 0.1f)
+                    {
+                        startAngle += DispersionAngle;
+                    }
+                    bullet.eulerAngles += Vector3.forward * startAngle;
                     startAngle += DispersionAngle;
                 }
-                bullet.eulerAngles += Vector3.forward * startAngle;
-                startAngle += DispersionAngle;
             }
         }
     }

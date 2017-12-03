@@ -28,7 +28,7 @@ public class Projectile : MonoBehaviour
 
 	    if (BulletDied())
 	    {
-	        gameObject.SetActive(false);
+	        ObjectPoolingManager.DestroyPooledObject("Bullets", transform);
 	    }
 		
 	}
