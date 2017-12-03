@@ -1,9 +1,10 @@
-﻿using System;
+﻿using Assets.Scripts.Lib;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
-using Urandom = UnityEngine.Random;
+using Unrandom = UnityEngine.Random;
 
 namespace Assets.Scripts
 {    
@@ -20,6 +21,7 @@ namespace Assets.Scripts
         public GameObject[] FloorTiles;
         public GameObject[] WallTiles;
         public GameObject[] InteractableTiles;
+        public GameObject[] EnemySpawnTiles;
         public GameObject ExitTile;
         public BuildingFloor CurrentFloor;
         public float tileScale = 2f;
@@ -53,56 +55,75 @@ namespace Assets.Scripts
             // populate some configurable sparsity of patterns of tile placement, like cubicle groups
             // never place groups of objects along the walls in such a way that they block the exit or interfere with the starting position
 
-            // first  pass, let's just create a random number of water coolers and position them about
-            var numToQueue = (int)Urandom.Range(Constants.MinNumInteractablesPerLevel, size.x * size.y * Constants.PercentInteractableCoverage);
-            for (int i = 0; i < numToQueue; i++)
+            var numSpawners = this.TrumpTower.NumberOfFloors - this.TrumpTower.CurrentFloor + 1;
+            for (int i = 0; i < numSpawners; i++)
             {
-                var tile = this.InteractableTiles[Urandom.Range(0, InteractableTiles.Length)];
-                Vector2? pos = null;
-                do
-                {
-                    pos = new Vector2((int)Urandom.Range(1, size.x - 2) * tileScale, (int)Urandom.Range(1, size.y - 2) * tileScale); 
-                    if (state.QueuedTiles.ContainsKey(pos.Value))
-                    {
-                        pos = null;
-                    }
-                    else if (pos == this.CurrentFloor.ExitPosition || pos == this.CurrentFloor.StartPosition)
-                    {
-                        pos = null;
-                    }
-                } while (pos == null);
+                var spawner = this.EnemySpawnTiles.RandomElement();
+                Vector2? pos = GetAvailablePos(state, size);
+                state.QueuedTiles.Add(pos.Value, spawner);
+            }
 
+            // first  pass, let's just create a random number of water coolers and position them about
+            var numOfInteractables = (int)Unrandom.Range(Constants.MinNumInteractablesPerLevel, size.x * size.y * Constants.PercentInteractableCoverage);
+            for (int i = 0; i < numOfInteractables; i++)
+            {
+                var tile = this.InteractableTiles.RandomElement();
+                Vector2? pos = GetAvailablePos(state, size);
                 state.QueuedTiles.Add(pos.Value, tile);
             }
+        }
+
+        private Vector2? GetAvailablePos(LevelBuildingState state, Vector2 size)
+        {
+            Vector2? pos;
+            do
+            {
+                pos = new Vector2((int)Unrandom.Range(1, size.x - 2) * tileScale, (int)Unrandom.Range(1, size.y - 2) * tileScale);
+                if (state.QueuedTiles.ContainsKey(pos.Value))
+                {
+                    pos = null;
+                }
+                else if (pos == this.CurrentFloor.ExitPosition || pos == this.CurrentFloor.StartPosition)
+                {
+                    pos = null;
+                }
+            } while (pos == null);
+            return pos;
         }
 
         private GameObject SelectTileForPosition(Vector2 pos, LevelBuildingState state)
         {
             GameObject tile = null;
             var isExit = false;
+            var msg = "";
             if (IsWallPosition((int)pos.x, (int)pos.y))
             {
                 if (pos.x == this.CurrentFloor.ExitPosition.x && pos.y == this.CurrentFloor.ExitPosition.y)
                 {
+                    msg = "exit";
                     tile = ExitTile;
                     isExit = true;
                 }
                 else
                 {
-                    tile = this.WallTiles[Urandom.Range(0, this.WallTiles.Length)];
+                    msg = "rnd wal";
+                    tile = this.WallTiles.RandomElement();
                 }
             }
             else if (state.QueuedTiles.ContainsKey(pos))
             {
+                msg = "queued";
                 // Constructing some sort of group of related tiles
                 tile = state.QueuedTiles[pos];
             }
             else
             {
+                msg = "floor";
                 // Floor tiles
-                tile = this.FloorTiles[Urandom.Range(0, this.FloorTiles.Length)];
+                tile = this.FloorTiles.RandomElement();
             }
 
+            Debug.LogError(msg);
             GameObject result = Instantiate(tile, new Vector3(pos.x, pos.y, 0f), Quaternion.identity) as GameObject;
 
             if (isExit)
@@ -197,13 +218,13 @@ namespace Assets.Scripts
 
         public Vector2 GetRandomPositionInsideWalls()
         {
-            return new Vector2(Urandom.Range(1 * TileScale, this.Size.x * TileScale), Urandom.Range(1 * TileScale, this.Size.y * TileScale));
+            return new Vector2(Unrandom.Range(1 * TileScale, this.Size.x * TileScale), Unrandom.Range(1 * TileScale, this.Size.y * TileScale));
         }
 
         private Vector2 GetRandomPositionAlongWall()
         {
             int x;
-            var xType = Urandom.Range(0, 3);
+            var xType = Unrandom.Range(0, 3);
             if (xType == 0)
             {
                 x = 0; // left wall
@@ -214,19 +235,19 @@ namespace Assets.Scripts
             }
             else
             {
-                x = (int)Urandom.Range(1, this.Size.x - 2); // top or bottom walls from 0 -> x avoiding corners
+                x = (int)Unrandom.Range(1, this.Size.x - 2); // top or bottom walls from 0 -> x avoiding corners
             }
 
             int y; 
             if (x == 0 || x == this.Size.x - 1)
             {
                 // If 'x' is constrained to the left or right walls then y is free to spread along its range
-                y = (int)Urandom.Range(1, this.Size.y - 2); // top or bottom walls from 0 -> y avoiding corners
+                y = (int)Unrandom.Range(1, this.Size.y - 2); // top or bottom walls from 0 -> y avoiding corners
             }
             else
             {
                 // otherwise, 'x' is free, so y is constrained
-                y = Urandom.Range(0, 2) > 0 ? (int)this.Size.y - 1 : 0;
+                y = Unrandom.Range(0, 2) > 0 ? (int)this.Size.y - 1 : 0;
             }
             var result = new Vector2(x * TileScale, y * TileScale);
             return result;
