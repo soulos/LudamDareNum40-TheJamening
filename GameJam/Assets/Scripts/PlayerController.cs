@@ -62,7 +62,6 @@ public class PlayerController : MonoBehaviour
 
     void SpawnForwardBullet()
     {
-        // this should become part of the objectPooler
         ObjectPoolingManager.GetGameObject("Bullets", transform.position + transform.up * 2, transform.rotation);
     }
 
