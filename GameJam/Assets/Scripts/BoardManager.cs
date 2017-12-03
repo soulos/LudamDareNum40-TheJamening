@@ -9,6 +9,13 @@ namespace Assets.Scripts
 {    
     public class BoardManager : MonoBehaviour
     {
+        private class Constants
+        {
+            public static int MinNumInteractablesPerLevel { get; private set; } = 10;
+            public static float PercentInteractableCoverage { get; private set; } = .04f;
+            public static int NumberOfFloorsInTrumpTower { get; private set; } = 58;
+        }
+
         public Building TrumpTower { get; set; }
         public GameObject[] FloorTiles;
         public GameObject[] WallTiles;
@@ -21,26 +28,61 @@ namespace Assets.Scripts
             this.InitBuilding();
         }
 
+        public class LevelBuildingState
+        {
+            public Dictionary<Vector2, GameObject> QueuedTiles { get; set; } = new Dictionary<Vector2, GameObject>();
+        }
+        
         public void GenerateFloor()
         {
-            this.CurrentFloor = new BuildingFloor(this.TrumpTower.CurrentFloor, this.TrumpTower.GetFloorSize());            
+            this.CurrentFloor = new BuildingFloor(this.TrumpTower.CurrentFloor, this.TrumpTower.GetFloorSize());
+            var state = new LevelBuildingState();
+            this.GenerateRandomState(state, this.CurrentFloor.Size);
             for (int x = 0; x < this.CurrentFloor.Size.x; x++)
             {
                 for (int y = 0; y < this.CurrentFloor.Size.y; y++)
                 {
-                    var tile = this.SelectTileForPosition(x, y);
+                    var tile = this.SelectTileForPosition(new Vector2(x, y), state);
                     tile.transform.SetParent(this.CurrentFloor.FloorHolder);
                 }
             }
         }
 
-        private GameObject SelectTileForPosition(int x, int y)
+        public void GenerateRandomState(LevelBuildingState state, Vector2 size)
+        {
+            // populate some configurable sparsity of patterns of tile placement, like cubicle groups
+            // never place groups of objects along the walls in such a way that they block the exit or interfere with the starting position
+
+            // first  pass, let's just create a random number of water coolers and position them about
+            var numToQueue = (int)Urandom.Range(Constants.MinNumInteractablesPerLevel, size.x * size.y * Constants.PercentInteractableCoverage);
+            for (int i = 0; i < numToQueue; i++)
+            {
+                var tile = this.InteractableTiles[Urandom.Range(0, InteractableTiles.Length)];
+                Vector2? pos = null;
+                do
+                {
+                    pos = new Vector2((int)Urandom.Range(1, size.x - 2), (int)Urandom.Range(1, size.y - 2)); 
+                    if (state.QueuedTiles.ContainsKey(pos.Value))
+                    {
+                        pos = null;
+                    }
+                    else if (pos == this.CurrentFloor.ExitPosition || pos == this.CurrentFloor.StartPosition)
+                    {
+                        pos = null;
+                    }
+                } while (pos == null);
+
+                state.QueuedTiles.Add(pos.Value, tile);
+            }
+        }
+
+        private GameObject SelectTileForPosition(Vector2 pos, LevelBuildingState state)
         {
             GameObject tile = null;
             var isExit = false;
-            if (IsWallPosition(x, y))
+            if (IsWallPosition((int)pos.x, (int)pos.y))
             {
-                if (x == this.CurrentFloor.ExitPosition.x && y == this.CurrentFloor.ExitPosition.y)
+                if (pos.x == this.CurrentFloor.ExitPosition.x && pos.y == this.CurrentFloor.ExitPosition.y)
                 {
                     tile = ExitTile;
                     isExit = true;
@@ -50,13 +92,18 @@ namespace Assets.Scripts
                     tile = this.WallTiles[Urandom.Range(0, this.WallTiles.Length)];
                 }
             }
+            else if (state.QueuedTiles.ContainsKey(pos))
+            {
+                // Constructing some sort of group of related tiles
+                tile = state.QueuedTiles[pos];
+            }
             else
             {
                 // Floor tiles
                 tile = this.FloorTiles[Urandom.Range(0, this.FloorTiles.Length)];
             }
 
-            GameObject result = Instantiate(tile, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
+            GameObject result = Instantiate(tile, new Vector3(pos.x, pos.y, 0f), Quaternion.identity) as GameObject;
 
             //if (isExit)
             //{
@@ -77,8 +124,8 @@ namespace Assets.Scripts
         {
             this.TrumpTower = new Building()
             {
-                NumberOfFloors = 58,
-                CurrentFloor = 58
+                NumberOfFloors = Constants.NumberOfFloorsInTrumpTower,
+                CurrentFloor = Constants.NumberOfFloorsInTrumpTower
             };
         }
     }
@@ -108,12 +155,19 @@ namespace Assets.Scripts
         public Transform FloorHolder;
         public int FloorNumber { get; set; }
         public Vector2 ExitPosition { get; set; }
-        public BuildingFloor(int floorNumber, Vector2 size)
+        public Vector2 StartPosition { get; set; }
+        public BuildingFloor(int floorNumber, Vector2 size, Vector2? prevExitPosition = null)
         {
             this.Size = size;
             this.FloorNumber = floorNumber;
             this.ExitPosition = this.GetRandomPositionAlongWall();
+            this.StartPosition = prevExitPosition ?? GetRandomPositionInsideWalls();
             this.FloorHolder = new GameObject($"BuildingFloor-{floorNumber}").transform;
+        }
+
+        private Vector2 GetRandomPositionInsideWalls()
+        {
+            return new Vector2(Urandom.Range(1, this.Size.x), Urandom.Range(1, this.Size.y));
         }
 
         private Vector2 GetRandomPositionAlongWall()
