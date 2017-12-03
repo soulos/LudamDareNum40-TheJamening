@@ -26,7 +26,7 @@ GameObject:
   - component: {fileID: 114797946472904190}
   m_Layer: 12
   m_Name: ZombieSpawner
-  m_TagString: Enemy
+  m_TagString: EnemySpawner
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,6 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PoolName: Zombie1
   PointValue: 10
+  boardManager: {fileID: 0}
 --- !u!114 &114717952430657272
 MonoBehaviour:
   m_ObjectHideFlags: 1
