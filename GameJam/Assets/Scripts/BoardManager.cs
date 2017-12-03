@@ -105,12 +105,35 @@ namespace Assets.Scripts
 
             GameObject result = Instantiate(tile, new Vector3(pos.x, pos.y, 0f), Quaternion.identity) as GameObject;
 
-            //if (isExit)
-            //{
-            //    result.transform.localRotation = Quaternion.Euler(0, -90, 0);
-            //}
+            if (isExit)
+            {
+                RotateExitToFaceInward(pos, result);
+            }
 
             return result;
+        }
+
+        private void RotateExitToFaceInward(Vector2 pos, GameObject result)
+        {
+            var angle = 0; // top wall
+            if (pos.y == 0)
+            {
+                angle = 180; // bottom wall
+            }
+            else if (pos.x == 0)
+            {
+                angle = 90; // left wall
+            }
+            else if (pos.x == this.CurrentFloor.Size.x - 1)
+            {
+                angle = 270; // right wall
+            }
+
+            result.transform.RotateAround(
+                result.GetComponent<Renderer>().bounds.center,
+                Vector3.forward,
+                angle
+            );
         }
 
         private bool IsWallPosition(int x, int y)
@@ -172,7 +195,33 @@ namespace Assets.Scripts
 
         private Vector2 GetRandomPositionAlongWall()
         {
-            var result = new Vector2(Urandom.Range(0, 2) > 0 ? this.Size.x - 1 : 0, Urandom.Range(0, (int)this.Size.y - 1));
+            int x;
+            var xType = Urandom.Range(0, 3);
+            if (xType == 0)
+            {
+                x = 0; // left wall
+            }
+            else if (xType == 1)
+            {
+                x = (int)this.Size.x - 1; // right wall
+            }
+            else
+            {
+                x = (int)Urandom.Range(1, this.Size.x - 2); // top or bottom walls from 0 -> x avoiding corners
+            }
+
+            int y; 
+            if (x == 0 || x == this.Size.x - 1)
+            {
+                // If 'x' is constrained to the left or right walls then y is free to spread along its range
+                y = (int)Urandom.Range(1, this.Size.y - 2); // top or bottom walls from 0 -> y avoiding corners
+            }
+            else
+            {
+                // otherwise, 'x' is free, so y is constrained
+                y = Urandom.Range(0, 2) > 0 ? (int)this.Size.y - 1 : 0;
+            }
+            var result = new Vector2(x, y);
             return result;
         }
     }
