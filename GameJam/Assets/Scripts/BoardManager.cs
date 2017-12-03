@@ -35,7 +35,7 @@ namespace Assets.Scripts
         
         public void GenerateFloor()
         {
-            this.CurrentFloor = new BuildingFloor(this.TrumpTower.CurrentFloor, this.TrumpTower.GetFloorSize());
+            this.CurrentFloor = new BuildingFloor(this.TrumpTower.CurrentFloor, this.TrumpTower.GetFloorSize(), this.tileScale);
             var state = new LevelBuildingState();
             this.GenerateRandomState(state, this.CurrentFloor.Size);
             for (int x = 0; x < this.CurrentFloor.Size.x; x++)
@@ -61,7 +61,7 @@ namespace Assets.Scripts
                 Vector2? pos = null;
                 do
                 {
-                    pos = new Vector2((int)Urandom.Range(1, size.x - 2), (int)Urandom.Range(1, size.y - 2)); 
+                    pos = new Vector2((int)Urandom.Range(1, size.x - 2) * tileScale, (int)Urandom.Range(1, size.y - 2) * tileScale); 
                     if (state.QueuedTiles.ContainsKey(pos.Value))
                     {
                         pos = null;
@@ -124,7 +124,7 @@ namespace Assets.Scripts
             {
                 angle = 90; // left wall
             }
-            else if (pos.x == this.CurrentFloor.Size.x - 1)
+            else if (pos.x == (this.CurrentFloor.Size.x - 1) * tileScale)
             {
                 angle = 270; // right wall
             }
@@ -175,13 +175,15 @@ namespace Assets.Scripts
     public class BuildingFloor
     {
         public Vector2 Size;
+        public float TileScale { get; }
         public Transform FloorHolder;
         public int FloorNumber { get; set; }
         public Vector2 ExitPosition { get; set; }
         public Vector2 StartPosition { get; set; }
-        public BuildingFloor(int floorNumber, Vector2 size, Vector2? prevExitPosition = null)
+        public BuildingFloor(int floorNumber, Vector2 size, float tileScale, Vector2? prevExitPosition = null)
         {
             this.Size = size;
+            this.TileScale = tileScale;
             this.FloorNumber = floorNumber;
             this.ExitPosition = this.GetRandomPositionAlongWall();
             this.StartPosition = prevExitPosition ?? GetRandomPositionInsideWalls();
@@ -221,7 +223,7 @@ namespace Assets.Scripts
                 // otherwise, 'x' is free, so y is constrained
                 y = Urandom.Range(0, 2) > 0 ? (int)this.Size.y - 1 : 0;
             }
-            var result = new Vector2(x, y);
+            var result = new Vector2(x * TileScale, y * TileScale);
             return result;
         }
     }
