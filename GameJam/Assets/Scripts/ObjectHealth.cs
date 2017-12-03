@@ -46,7 +46,7 @@ public class ObjectHealth : MonoBehaviour
                     }
                     else
                     {
-                        
+
                     }
                 }
 
