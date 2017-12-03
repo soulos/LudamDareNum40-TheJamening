@@ -22,9 +22,11 @@ GameObject:
   - component: {fileID: 212775453401639660}
   - component: {fileID: 61643021624927566}
   - component: {fileID: 114598183224164990}
+  - component: {fileID: 114399666189062168}
+  - component: {fileID: 114228591284028250}
   m_Layer: 12
   m_Name: Zombie1
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -67,6 +69,32 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.56, y: 2.56}
   m_EdgeRadius: 0
+--- !u!114 &114228591284028250
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1071913542179356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc2999fcea302fa49beeea469b05a298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PoolName: Zombie1
+  PointValue: 10
+--- !u!114 &114399666189062168
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1071913542179356}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f381458bd2c6d74f9c54742c12b75e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 50
+  DamageReduction: 1
 --- !u!114 &114598183224164990
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -78,6 +106,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99d9d840aa72635499f77957ec12c8a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PointValue: 10
+  Speed: 4
 --- !u!212 &212775453401639660
 SpriteRenderer:
   m_ObjectHideFlags: 1

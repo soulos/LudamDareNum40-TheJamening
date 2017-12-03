@@ -36,17 +36,24 @@ public class ObjectHealth : MonoBehaviour
                 {
                     reflectiveObject.Reflect(col.contacts[0], col.collider.transform);
                 }
-                if (currentHealth <= 0)
-                {
-                    // player died of lead poisoning
-                    // play death anim then change state -- look at Animation events
-                    if (gameObject.CompareTag("Player"))
-                    {
-                        GameManager.ChangeState(GameState.DiedBullet);
-                    }
-                    else
-                    {
 
+                else
+                {
+                    ObjectPoolingManager.DestroyPooledObject("Bullets", col.collider.transform);
+                    if (currentHealth <= 0)
+                    {
+                       
+                        // player died of lead poisoning
+                        // play death anim then change state -- look at Animation events
+                        if (gameObject.CompareTag("Player"))
+                        {
+                            GameManager.ChangeState(GameState.DiedBullet);
+                        }
+                        else if (gameObject.CompareTag("Enemy"))
+                        {
+                           gameObject.GetComponent<EnemyDie>().Die();
+
+                        }
                     }
                 }
 

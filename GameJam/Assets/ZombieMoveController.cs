@@ -6,7 +6,8 @@ using UnityEngine;
 public class ZombieMoveController : MonoBehaviour
 {
     private Transform target;
-
+    public int PointValue = 10;
+    
     public float Speed = 4;
 	// Use this for initialization
 	void Start ()
