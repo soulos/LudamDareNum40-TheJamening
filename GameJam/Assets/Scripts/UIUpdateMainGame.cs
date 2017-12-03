@@ -7,11 +7,13 @@ public class UIUpdateMainGame : MonoBehaviour
     private Text score;
 
     private Image health;
-	// Use this for initialization
-	void Start ()
+    private Image alcohol;
+    // Use this for initialization
+    void Start ()
 	{
 	    score = GameObject.Find("Score").GetComponent<Text>();
 	    health = GameObject.Find("Health").GetComponent<Image>();
+	    alcohol = GameObject.Find("Alcohol").GetComponent<Image>();
     }
 	
 	// Update is called once per frame
@@ -20,8 +22,10 @@ public class UIUpdateMainGame : MonoBehaviour
 	    score.text = $"{GameManager.GetCurrentScore():0000000000}";
 	}
 
-    public void UpdateHealthMeter(float healthValue)
+    public void UpdateHealthAndAlcoholMeters(float healthValue, float alcoholValue)
     {
+        Debug.Log($"Health: {healthValue}  Alcohol: {alcoholValue}");
         health.fillAmount = healthValue;
+        alcohol.fillAmount = alcoholValue;
     }
 }

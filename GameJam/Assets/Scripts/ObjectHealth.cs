@@ -11,12 +11,31 @@ public class ObjectHealth : MonoBehaviour
 
     private float currentHealth = 100;
 
+    public int MaxAlcohol = 100;
+
+    private float currentAlcohol = 0;
+
     public float DamageReduction = 0;
 
     // Use this for initialization
     void Start()
     {
         currentHealth = MaxHealth;
+    }
+
+    public void DrinkAlcohol(int alcoholAmount, int healthAmount)
+    {
+        currentAlcohol += alcoholAmount;
+        currentHealth += healthAmount;
+        if (currentAlcohol >= MaxAlcohol)
+        {
+            //Player is munted
+            currentHealth = 0;
+
+        }
+
+        if (currentHealth > MaxHealth)
+            currentHealth = MaxHealth;
     }
 
 
@@ -40,7 +59,7 @@ public class ObjectHealth : MonoBehaviour
                 else
                 {
                     ObjectPoolingManager.DestroyPooledObject("Bullets", col.collider.transform);
-                    if (currentHealth <= 0)
+                    if (currentHealth <= 0 && currentAlcohol < MaxAlcohol)
                     {
                        
                         // player died of lead poisoning
@@ -54,9 +73,14 @@ public class ObjectHealth : MonoBehaviour
                            gameObject.GetComponent<EnemyDie>().Die();
                         }
                     }
+                    else if (currentHealth <= 0 && currentAlcohol >= MaxAlcohol)
+                    {
+                        if (gameObject.CompareTag("Player"))
+                        {
+                            GameManager.ChangeState(GameState.DiedAlcohol);
+                        }
+                    }
                 }
-
-
             }
 
         }
@@ -74,5 +98,10 @@ public class ObjectHealth : MonoBehaviour
     public float HealthPercent()
     {
         return (float)currentHealth / (float)MaxHealth;
+    }
+
+    public float AlcoholPercent()
+    {
+        return (float)currentAlcohol / (float)MaxAlcohol;
     }
 }

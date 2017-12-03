@@ -10,6 +10,7 @@ public class LevelManager : MonoBehaviour
 
     private PlayerController player;
 
+
     public UIUpdateMainGame UI;
     private int currentLevel = 1;
     
@@ -39,7 +40,8 @@ public class LevelManager : MonoBehaviour
 	        GetPlayer();
 
 	    }
-	    UI.UpdateHealthMeter(player.GetHealthPercent());
+	    UI.UpdateHealthAndAlcoholMeters(player.health.HealthPercent(),player.health.AlcoholPercent());
+
 	}
 
     public void GenerateLevel(int level)

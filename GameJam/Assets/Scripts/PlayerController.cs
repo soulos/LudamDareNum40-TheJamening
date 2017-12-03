@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     
 	void Start ()
 	{
-	    
+	    health = GetComponent<ObjectHealth>();
 	}
 	
 	// Update is called once per frame
@@ -48,11 +48,7 @@ public class PlayerController : MonoBehaviour
         transform.Translate(Vector3.up * movement * MovementSpeed * Time.deltaTime);
     }
 
-    public float GetHealthPercent()
-    {
-        var result = health?.HealthPercent() ?? 0.0f;
-        return result;
-    }
+   
     void Shoot()
     {
         // fire bullets

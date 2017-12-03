@@ -9,23 +9,25 @@ public class AlcoholPickup : MonoBehaviour
 
     public string ExplosionPoolName;
 
-    public float AlcoholAmount = 10;
+    public int AlcoholAmount = 10;
 
-    public float HealthAmount = 10;
+    public int HealthAmount = 10;
     
-    void OnCollisionEnter(Collision col)
+    void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.collider.gameObject.layer == LayerMask.NameToLayer("Bullet"))
+        if (col.gameObject.layer == LayerMask.NameToLayer("Bullet"))
         {
             // make explode
             ObjectPoolingManager.GetGameObject(ExplosionPoolName, transform.position, Quaternion.identity);
             ObjectPoolingManager.DestroyPooledObject(PoolName,transform);
         }
-        else if (col.collider.gameObject.CompareTag("Player"))
+        else if (col.gameObject.CompareTag("Player"))
         {
             // drink
             ObjectPoolingManager.DestroyPooledObject(PoolName, transform);
             // increase health
+            col.gameObject.GetComponent<ObjectHealth>().DrinkAlcohol(AlcoholAmount, HealthAmount);
+
             // increase alcohol
 
         }
