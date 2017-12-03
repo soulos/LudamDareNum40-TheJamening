@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using Urandom = UnityEngine.Random;
 
 namespace Assets.Scripts
 {    
@@ -10,6 +11,9 @@ namespace Assets.Scripts
     {
         public Building TrumpTower { get; set; }
         public GameObject[] FloorTiles;
+        public GameObject[] WallTiles;
+        public GameObject[] InteractableTiles;
+        public GameObject ExitTile;
         public BuildingFloor CurrentFloor;
 
         public void Awake()
@@ -19,24 +23,54 @@ namespace Assets.Scripts
 
         public void GenerateFloor()
         {
-            this.CurrentFloor = this.GenerateFloor(this.TrumpTower.CurrentFloor);
-        }
-
-        public BuildingFloor GenerateFloor(int floorNumber)
-        {
-            var result = new BuildingFloor(floorNumber, this.TrumpTower.GetFloorSize());
-            for (int x = 0; x < result.Size.x; x++)
+            this.CurrentFloor = new BuildingFloor(this.TrumpTower.CurrentFloor, this.TrumpTower.GetFloorSize());            
+            for (int x = 0; x < this.CurrentFloor.Size.x; x++)
             {
-                for (int y = 0; y < result.Size.y; y++)
+                for (int y = 0; y < this.CurrentFloor.Size.y; y++)
                 {
-                    result.gridPositions.Add(new Vector2(x, y), new Vector2(x, y));
-                    GameObject toInstantiate = this.FloorTiles[UnityEngine.Random.Range(0, this.FloorTiles.Length)];
-                    GameObject instance = Instantiate(toInstantiate, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
-                    instance.transform.SetParent(result.FloorHolder);
+                    var tile = this.SelectTileForPosition(x, y);
+                    tile.transform.SetParent(this.CurrentFloor.FloorHolder);
                 }
             }
+        }
+
+        private GameObject SelectTileForPosition(int x, int y)
+        {
+            GameObject tile = null;
+            var isExit = false;
+            if (IsWallPosition(x, y))
+            {
+                if (x == this.CurrentFloor.ExitPosition.x && y == this.CurrentFloor.ExitPosition.y)
+                {
+                    tile = ExitTile;
+                    isExit = true;
+                }
+                else
+                {
+                    tile = this.WallTiles[Urandom.Range(0, this.WallTiles.Length)];
+                }
+            }
+            else
+            {
+                // Floor tiles
+                tile = this.FloorTiles[Urandom.Range(0, this.FloorTiles.Length)];
+            }
+
+            GameObject result = Instantiate(tile, new Vector3(x, y, 0f), Quaternion.identity) as GameObject;
+
+            //if (isExit)
+            //{
+            //    result.transform.localRotation = Quaternion.Euler(0, -90, 0);
+            //}
 
             return result;
+        }
+
+        private bool IsWallPosition(int x, int y)
+        {
+            var lastMostX = this.CurrentFloor.Size.x - 1;
+            var lastMostY = this.CurrentFloor.Size.y - 1;
+            return (y == 0 || x == 0 || y == lastMostY || x == lastMostX);
         }
 
         private void InitBuilding()
@@ -52,7 +86,7 @@ namespace Assets.Scripts
     public class Building
     {
         public int NumberOfFloors { get; set; }
-        public int CurrentFloor { get; set; }
+        public int CurrentFloor { get; set; }        
 
         public Vector2 GetFloorSize()
         {
@@ -72,13 +106,20 @@ namespace Assets.Scripts
     {
         public Vector2 Size;
         public Transform FloorHolder;
-        public Dictionary<Vector2, Vector2> gridPositions = new Dictionary<Vector2, Vector2>();
         public int FloorNumber { get; set; }
+        public Vector2 ExitPosition { get; set; }
         public BuildingFloor(int floorNumber, Vector2 size)
         {
             this.Size = size;
             this.FloorNumber = floorNumber;
+            this.ExitPosition = this.GetRandomPositionAlongWall();
             this.FloorHolder = new GameObject($"BuildingFloor-{floorNumber}").transform;
+        }
+
+        private Vector2 GetRandomPositionAlongWall()
+        {
+            var result = new Vector2(Urandom.Range(0, 2) > 0 ? this.Size.x - 1 : 0, Urandom.Range(0, (int)this.Size.y - 1));
+            return result;
         }
     }
 }
