@@ -11,11 +11,13 @@ public class PlayerController : MonoBehaviour
     public int BulletLevel = 1;
     public float DispersionAngle = 20f;
     public float ShotDelay = 1.0f;
-
+    public ObjectHealth health;
     private float shotTimer = 0;
 	// Use this for initialization
-	void Start () {
-		
+    
+	void Start ()
+	{
+	    
 	}
 	
 	// Update is called once per frame
@@ -46,6 +48,11 @@ public class PlayerController : MonoBehaviour
         transform.Translate(Vector3.up * movement * MovementSpeed * Time.deltaTime);
     }
 
+    public float GetHealthPercent()
+    {
+        var result = health?.HealthPercent() ?? 0.0f;
+        return result;
+    }
     void Shoot()
     {
         // fire bullets
@@ -56,7 +63,7 @@ public class PlayerController : MonoBehaviour
     void SpawnForwardBullet()
     {
         // this should become part of the objectPooler
-        ObjectPoolingManager.GetGameObject("Bullets", transform.position + Vector3.up, transform.rotation);
+        ObjectPoolingManager.GetGameObject("Bullets", transform.position + transform.up * 2, transform.rotation);
     }
 
     void GenerateBulletSpray()
@@ -77,7 +84,7 @@ public class PlayerController : MonoBehaviour
             var startAngle = 0f - (bullets / 2.0f * DispersionAngle);
             for (int loop = 0; loop < bullets; loop++)
             {
-                var bullet = ObjectPoolingManager.GetGameObject("Bullets", transform.position + Vector3.up, transform.rotation);
+                var bullet = ObjectPoolingManager.GetGameObject("Bullets", transform.position + transform.up *2, transform.rotation);
                 if (bullet != null)
                 {
                     if (startAngle > -0.1f && startAngle <= 0.1f)

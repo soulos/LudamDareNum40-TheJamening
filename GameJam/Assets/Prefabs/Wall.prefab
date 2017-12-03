@@ -21,7 +21,9 @@ GameObject:
   - component: {fileID: 4316518962770096}
   - component: {fileID: 212764595123800396}
   - component: {fileID: 61805490075983112}
-  m_Layer: 8
+  - component: {fileID: 114567083263763526}
+  - component: {fileID: 114000667816904196}
+  m_Layer: 10
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -66,6 +68,31 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.5, y: 2.5}
   m_EdgeRadius: 0
+--- !u!114 &114000667816904196
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1939204467981428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f381458bd2c6d74f9c54742c12b75e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 100
+  DamageReduction: 0
+--- !u!114 &114567083263763526
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1939204467981428}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4becc1190b41475408dbedb887c9a81b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ReflectionVariance: 50
 --- !u!212 &212764595123800396
 SpriteRenderer:
   m_ObjectHideFlags: 1

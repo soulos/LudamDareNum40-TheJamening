@@ -48,3 +48,15 @@ TagManager:
   - name: Units
     uniqueID: 670398915
     locked: 0
+  - name: Blood
+    uniqueID: 2572979721
+    locked: 0
+  - name: Bullet
+    uniqueID: 1032345237
+    locked: 0
+  - name: Characters
+    uniqueID: 1317139225
+    locked: 0
+  - name: Spawner
+    uniqueID: 440110185
+    locked: 0

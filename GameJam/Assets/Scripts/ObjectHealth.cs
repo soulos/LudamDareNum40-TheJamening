@@ -71,4 +71,9 @@ public class ObjectHealth : MonoBehaviour
         }
     
     }
+
+    public float HealthPercent()
+    {
+        return (float)currentHealth / (float)MaxHealth;
+    }
 }
