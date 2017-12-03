@@ -63,6 +63,11 @@ namespace Assets.Scripts
 
         public void GenerateFloor()
         {
+            if (this.CurrentFloor != null)
+            {
+                Destroy(this.CurrentFloor.FloorHolder.gameObject);
+            }
+
             this.CurrentFloor = this.GenerateRandomState(this.TrumpTower.GetFloorSize(), this.CurrentFloor);
             for (int x = 0; x < this.CurrentFloor.BoardSize.x; x++)
             {
@@ -80,7 +85,7 @@ namespace Assets.Scripts
             // never place groups of objects along the walls in such a way that they block the exit or interfere with the starting position
             var state = new LevelState(this.CurrentFloor?.FloorNumber - 1 ?? this.TrumpTower.NumberOfFloors, tileScale, size);
             state.ExitPosition = this.GetRandomPositionAlongWall(state);
-            state.StartPosition = previousState?.ExitPosition ?? GetRandomPositionInsideWalls(state);
+            state.StartPosition = GetRandomPositionInsideWalls(state);
             state.NumSpawners = this.TrumpTower.NumberOfFloors - this.TrumpTower.CurrentFloorNumber + 1;
             for (int i = 0; i < state.NumSpawners; i++)
             {
@@ -166,14 +171,14 @@ namespace Assets.Scripts
             {
                 RotateExitToFaceInward(pos, result);
                 // Create the win box behind the exit
-                Vector2 toUse = GetOffsetToPositionOutsideWall(pos);
+                Vector2 toUse = GetOffsetToPositionWall(pos);
                 Instantiate(this.WinConditionTile, new Vector3(pos.x + toUse.x, pos.y + toUse.y, 0f), Quaternion.identity);
             }
 
             return result;
         }
 
-        private Vector2 GetOffsetToPositionOutsideWall(Vector2 pos)
+        public Vector2 GetOffsetToPositionWall(Vector2 pos)
         {
             Vector2 result;
             var roomside = GetRoomSide(pos);
