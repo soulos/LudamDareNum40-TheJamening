@@ -63,6 +63,11 @@ namespace Assets.Scripts
 
         public void GenerateFloor()
         {
+            if (this.CurrentFloor != null)
+            {
+                Destroy(this.CurrentFloor.FloorHolder.gameObject);
+            }
+
             this.CurrentFloor = this.GenerateRandomState(this.TrumpTower.GetFloorSize(), this.CurrentFloor);
             for (int x = 0; x < this.CurrentFloor.BoardSize.x; x++)
             {
@@ -166,32 +171,33 @@ namespace Assets.Scripts
             {
                 RotateExitToFaceInward(pos, result);
                 // Create the win box behind the exit
-                Vector2 toUse = GetOffsetToPositionOutsideWall(pos);
+                Vector2 toUse = GetOffsetToPositionWall(pos, true);
                 Instantiate(this.WinConditionTile, new Vector3(pos.x + toUse.x, pos.y + toUse.y, 0f), Quaternion.identity);
             }
 
             return result;
         }
 
-        private Vector2 GetOffsetToPositionOutsideWall(Vector2 pos)
+        public Vector2 GetOffsetToPositionWall(Vector2 pos, bool outsideWall)
         {
             Vector2 result;
+            var multiplier = outsideWall ? 1 : -1;
             var roomside = GetRoomSide(pos);
             if (roomside == RoomSide.Top)
             {
-                result = new Vector2(0, tileScale);
+                result = new Vector2(0, tileScale * multiplier);
             }
             else if (roomside == RoomSide.Bottom)
             {
-                result = new Vector2(0, -tileScale);
+                result = new Vector2(0, -tileScale * multiplier);
             }
             else if (roomside == RoomSide.Left)
             {
-                result = new Vector2(-tileScale, 0);
+                result = new Vector2(-tileScale * multiplier, 0);
             }
             else
             {
-                result = new Vector2(tileScale, 0);
+                result = new Vector2(tileScale * multiplier, 0);
             }
             return result;
         }
