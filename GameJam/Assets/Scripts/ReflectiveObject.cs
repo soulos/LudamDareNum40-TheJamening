@@ -17,7 +17,5 @@ public class ReflectiveObject : MonoBehaviour
         Quaternion rotation = Quaternion.FromToRotation(bullet.up, reflectedDirection);
         bullet.rotation = rotation * transform.rotation;
         bullet.eulerAngles += Vector3.forward * reflectionRotationAmount;
-        Debug.Log("ReflectionCalled");
-
     }
 }

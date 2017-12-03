@@ -151,6 +151,11 @@ namespace Assets.Scripts
                 CurrentFloor = Constants.NumberOfFloorsInTrumpTower
             };
         }
+        public Vector3 GetStart()
+        {
+            return CurrentFloor.GetRandomPositionInsideWalls();
+        }
+
     }
 
     public class Building
@@ -190,7 +195,7 @@ namespace Assets.Scripts
             this.FloorHolder = new GameObject($"BuildingFloor-{floorNumber}").transform;
         }
 
-        private Vector2 GetRandomPositionInsideWalls()
+        public Vector2 GetRandomPositionInsideWalls()
         {
             return new Vector2(Urandom.Range(1, this.Size.x), Urandom.Range(1, this.Size.y));
         }
@@ -226,5 +231,7 @@ namespace Assets.Scripts
             var result = new Vector2(x * TileScale, y * TileScale);
             return result;
         }
+
+       
     }
 }
