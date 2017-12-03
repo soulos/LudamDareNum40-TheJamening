@@ -31,14 +31,15 @@ public class ObjectHealth : MonoBehaviour
                 
                 var damage = DamageReduction * proj.Damage;
                 currentHealth -= (int)damage * DamageReduction;
+                Debug.LogError($"{col.collider.gameObject.tag}: {currentHealth}");
                 var reflectiveObject = gameObject.GetComponent<ReflectiveObject>();
                 if (reflectiveObject != null)
                 {
                     reflectiveObject.Reflect(col.contacts[0], col.collider.transform);
                 }
 
-                else
-                {
+                //else
+                //{
                     ObjectPoolingManager.DestroyPooledObject("Bullets", col.collider.transform);
                     if (currentHealth <= 0)
                     {
@@ -52,10 +53,9 @@ public class ObjectHealth : MonoBehaviour
                         else if (gameObject.CompareTag("Enemy"))
                         {
                            gameObject.GetComponent<EnemyDie>().Die();
-
                         }
                     }
-                }
+                //}
 
 
             }
