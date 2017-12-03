@@ -18,4 +18,13 @@ namespace Assets.Scripts
         GotHighscore,
         ShowHighscores
     }
+
+    public enum RoomSide
+    {
+        None,
+        Top,
+        Bottom,
+        Left,
+        Right
+    }
 }

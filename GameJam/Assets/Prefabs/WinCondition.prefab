@@ -9,32 +9,31 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1001960314893376}
+  m_RootGameObject: {fileID: 1198120030715546}
   m_IsPrefabParent: 1
---- !u!1 &1001960314893376
+--- !u!1 &1198120030715546
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4557498493424074}
-  - component: {fileID: 114328537199774822}
-  - component: {fileID: 114575502517613892}
-  - component: {fileID: 61636670326861136}
+  - component: {fileID: 4970512220678750}
+  - component: {fileID: 61985825082017070}
+  - component: {fileID: 114373096689536970}
   m_Layer: 0
-  m_Name: GameManager
-  m_TagString: Untagged
+  m_Name: WinCondition
+  m_TagString: LevelWin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4557498493424074
+--- !u!4 &4970512220678750
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1001960314893376}
+  m_GameObject: {fileID: 1198120030715546}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -42,18 +41,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!61 &61636670326861136
+--- !u!61 &61985825082017070
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1001960314893376}
+  m_GameObject: {fileID: 1198120030715546}
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
-  m_UsedByComposite: 0
+  m_UsedByComposite: 1
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
@@ -67,36 +66,14 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 5, y: 5}
   m_EdgeRadius: 0
---- !u!114 &114328537199774822
+--- !u!114 &114373096689536970
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1001960314893376}
+  m_GameObject: {fileID: 1198120030715546}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6812a1539aff85409ca3bbc38e928e2, type: 3}
+  m_Script: {fileID: 11500000, guid: cea58c645d1cf7d4ab66fafeb49568fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &114575502517613892
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1001960314893376}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f7e89c7a2c63d54b9c4d75911209825, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FloorTiles:
-  - {fileID: 1166729191109152, guid: 6dae2cc567bc18941b6f3cbfd6d3233b, type: 2}
-  WallTiles:
-  - {fileID: 1939204467981428, guid: 17ab5e5f045726e479f3bb84780286b3, type: 2}
-  InteractableTiles:
-  - {fileID: 1897376058199906, guid: 3acf23a2e28a36e45ab75c3f5ec727a4, type: 2}
-  EnemySpawnTiles: []
-  ExitTile: {fileID: 1296188180218602, guid: 85de21a2f80d7f444a12476c03cb6b96, type: 2}
-  WinConditionTile: {fileID: 1198120030715546, guid: 45e7c1317106700429fa130a68f88c7f,
-    type: 2}
-  tileScale: 2

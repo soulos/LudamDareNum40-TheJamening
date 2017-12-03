@@ -23,6 +23,7 @@ namespace Assets.Scripts
         public GameObject[] InteractableTiles;
         public GameObject[] EnemySpawnTiles;
         public GameObject ExitTile;
+        public GameObject WinConditionTile;
         public Dictionary<Vector2, GameObject> TilesByPosition { get; set; } = new Dictionary<Vector2, GameObject>();
 
         internal void SomethingDied(Transform thing)
@@ -164,25 +165,74 @@ namespace Assets.Scripts
             if (isExit)
             {
                 RotateExitToFaceInward(pos, result);
+                // Create the win box behind the exit
+                Vector2 toUse = GetOffsetToPositionOutsideWall(pos);
+                Instantiate(this.WinConditionTile, new Vector3(pos.x + toUse.x, pos.y + toUse.y, 0f), Quaternion.identity);
             }
 
             return result;
         }
 
-        private void RotateExitToFaceInward(Vector2 pos, GameObject result)
+        private Vector2 GetOffsetToPositionOutsideWall(Vector2 pos)
         {
-            var angle = 0; // top wall
+            Vector2 result;
+            var roomside = GetRoomSide(pos);
+            if (roomside == RoomSide.Top)
+            {
+                result = new Vector2(0, tileScale);
+            }
+            else if (roomside == RoomSide.Bottom)
+            {
+                result = new Vector2(0, -tileScale);
+            }
+            else if (roomside == RoomSide.Left)
+            {
+                result = new Vector2(-tileScale, 0);
+            }
+            else
+            {
+                result = new Vector2(tileScale, 0);
+            }
+            return result;
+        }
+
+        public RoomSide GetRoomSide(Vector2 pos)
+        {
+            var result = RoomSide.None;
             if (pos.y == 0)
             {
-                angle = 180; // bottom wall
+                result = RoomSide.Bottom;
             }
             else if (pos.x == 0)
             {
-                angle = 90; // left wall
+                result = RoomSide.Left;
             }
             else if (pos.x == (this.CurrentFloor.BoardSize.x - 1) * tileScale)
             {
-                angle = 270; // right wall
+                result = RoomSide.Right;
+            }
+            else if (pos.y == (this.CurrentFloor.BoardSize.y - 1) * tileScale)
+            {
+                result = RoomSide.Top;
+            }
+            return result;
+        }
+
+        private void RotateExitToFaceInward(Vector2 pos, GameObject result)
+        {
+            var roomside = GetRoomSide(pos);
+            var angle = 0; // top wall
+            if (roomside == RoomSide.Bottom)
+            {
+                angle = 180;
+            }
+            else if (roomside == RoomSide.Left)
+            {
+                angle = 90;
+            }
+            else if (roomside == RoomSide.Right)
+            {
+                angle = 270;
             }
 
             result.transform.RotateAround(
