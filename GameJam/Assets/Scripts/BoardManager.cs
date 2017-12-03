@@ -197,7 +197,7 @@ namespace Assets.Scripts
 
         public Vector2 GetRandomPositionInsideWalls()
         {
-            return new Vector2(Urandom.Range(1, this.Size.x), Urandom.Range(1, this.Size.y));
+            return new Vector2(Urandom.Range(1 * TileScale, this.Size.x * TileScale), Urandom.Range(1 * TileScale, this.Size.y * TileScale));
         }
 
         private Vector2 GetRandomPositionAlongWall()
