@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4557498493424074}
   - component: {fileID: 114328537199774822}
+  - component: {fileID: 114575502517613892}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -51,3 +52,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6812a1539aff85409ca3bbc38e928e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114575502517613892
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1001960314893376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f7e89c7a2c63d54b9c4d75911209825, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FloorTiles:
+  - {fileID: 1166729191109152, guid: 6dae2cc567bc18941b6f3cbfd6d3233b, type: 2}
+  WallTiles:
+  - {fileID: 1939204467981428, guid: 17ab5e5f045726e479f3bb84780286b3, type: 2}
+  InteractableTiles:
+  - {fileID: 1897376058199906, guid: 3acf23a2e28a36e45ab75c3f5ec727a4, type: 2}
+  ExitTile: {fileID: 1296188180218602, guid: 85de21a2f80d7f444a12476c03cb6b96, type: 2}
