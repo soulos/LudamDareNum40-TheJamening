@@ -23,40 +23,65 @@ namespace Assets.Scripts
         public GameObject[] InteractableTiles;
         public GameObject[] EnemySpawnTiles;
         public GameObject ExitTile;
-        public BuildingFloor CurrentFloor;
-        public float tileScale = 2f;
-        public void Awake()
+        public Dictionary<Vector2, GameObject> TilesByPosition { get; set; } = new Dictionary<Vector2, GameObject>();
+
+        internal void SomethingDied(Transform thing)
         {
-            this.InitBuilding();
+            if (thing.tag == "EnemySpawner")
+            {
+                SpawnerDestroyed();
+            }
         }
 
-        public class LevelBuildingState
+        private void SpawnerDestroyed()
         {
-            public Dictionary<Vector2, GameObject> QueuedTiles { get; set; } = new Dictionary<Vector2, GameObject>();
+            this.CurrentFloor.SpawnersDestroyed++;
+            if (this.CurrentFloor.SpawnersDestroyed == this.CurrentFloor.NumSpawners)
+            {
+                // TODO: Some kind of state machine would be nice here
+                this.OpenExit();
+            }
         }
-        
+
+        private void OpenExit()
+        {
+            GameObject exit;
+            if (this.TilesByPosition.TryGetValue(this.CurrentFloor.ExitPosition, out exit))
+            {
+                exit.GetComponent<BoxCollider2D>().enabled = false;
+            }
+        }
+
+        public LevelState CurrentFloor;
+        public float tileScale = 2f;
+
+        public void Awake()
+        {
+            this.InitBuilding();            
+        }
+
         public void GenerateFloor()
         {
-            this.CurrentFloor = new BuildingFloor(this.TrumpTower.CurrentFloor, this.TrumpTower.GetFloorSize(), this.tileScale);
-            var state = new LevelBuildingState();
-            this.GenerateRandomState(state, this.CurrentFloor.Size);
-            for (int x = 0; x < this.CurrentFloor.Size.x; x++)
+            this.CurrentFloor = this.GenerateRandomState(this.TrumpTower.GetFloorSize(), this.CurrentFloor);
+            for (int x = 0; x < this.CurrentFloor.BoardSize.x; x++)
             {
-                for (int y = 0; y < this.CurrentFloor.Size.y; y++)
+                for (int y = 0; y < this.CurrentFloor.BoardSize.y; y++)
                 {
-                    var tile = this.SelectTileForPosition(new Vector2(x* tileScale, y * tileScale), state);
+                    var tile = this.SelectTileForPosition(new Vector2(x* tileScale, y * tileScale));
                     tile.transform.SetParent(this.CurrentFloor.FloorHolder);
                 }
             }
         }
 
-        public void GenerateRandomState(LevelBuildingState state, Vector2 size)
+        public LevelState GenerateRandomState(Vector2 size, LevelState previousState = null)
         {
             // populate some configurable sparsity of patterns of tile placement, like cubicle groups
             // never place groups of objects along the walls in such a way that they block the exit or interfere with the starting position
-
-            var numSpawners = this.TrumpTower.NumberOfFloors - this.TrumpTower.CurrentFloor + 1;
-            for (int i = 0; i < numSpawners; i++)
+            var state = new LevelState(this.CurrentFloor?.FloorNumber - 1 ?? this.TrumpTower.NumberOfFloors, tileScale, size);
+            state.ExitPosition = this.GetRandomPositionAlongWall(state);
+            state.StartPosition = previousState?.ExitPosition ?? GetRandomPositionInsideWalls(state);
+            state.NumSpawners = this.TrumpTower.NumberOfFloors - this.TrumpTower.CurrentFloorNumber + 1;
+            for (int i = 0; i < state.NumSpawners; i++)
             {
                 var spawner = this.EnemySpawnTiles.RandomElement();
                 Vector2? pos = GetAvailablePos(state, size);
@@ -71,19 +96,22 @@ namespace Assets.Scripts
                 Vector2? pos = GetAvailablePos(state, size);
                 state.QueuedTiles.Add(pos.Value, tile);
             }
+
+            return state;
         }
 
-        private Vector2? GetAvailablePos(LevelBuildingState state, Vector2 size)
+        private static Vector2? GetAvailablePos(LevelState state, Vector2 size)
         {
             Vector2? pos;
             do
             {
-                pos = new Vector2((int)Unrandom.Range(1, size.x - 2) * tileScale, (int)Unrandom.Range(1, size.y - 2) * tileScale);
+                // Avoids walls outright by the 1 and (-2)
+                pos = new Vector2((int)Unrandom.Range(1, size.x - 2) * state.TileScale, (int)Unrandom.Range(1, size.y - 2) * state.TileScale);
                 if (state.QueuedTiles.ContainsKey(pos.Value))
                 {
                     pos = null;
                 }
-                else if (pos == this.CurrentFloor.ExitPosition || pos == this.CurrentFloor.StartPosition)
+                else if (pos == state.ExitPosition || pos == state.StartPosition)
                 {
                     pos = null;
                 }
@@ -91,7 +119,7 @@ namespace Assets.Scripts
             return pos;
         }
 
-        private GameObject SelectTileForPosition(Vector2 pos, LevelBuildingState state)
+        private GameObject SelectTileForPosition(Vector2 pos)
         {
             GameObject tile = null;
             var isExit = false;
@@ -110,11 +138,11 @@ namespace Assets.Scripts
                     tile = this.WallTiles.RandomElement();
                 }
             }
-            else if (state.QueuedTiles.ContainsKey(pos))
+            else if (this.CurrentFloor.QueuedTiles.ContainsKey(pos))
             {
                 //msg = "queued";
                 // Constructing some sort of group of related tiles
-                tile = state.QueuedTiles[pos];
+                tile = this.CurrentFloor.QueuedTiles[pos];
             }
             else
             {
@@ -125,6 +153,13 @@ namespace Assets.Scripts
 
             //Debug.LogError(msg);
             GameObject result = Instantiate(tile, new Vector3(pos.x, pos.y, 0f), Quaternion.identity) as GameObject;
+            this.TilesByPosition[pos] = result;
+
+            var enemyDie = result.GetComponent<EnemyDie>();
+            if (enemyDie != null)
+            {
+                enemyDie.boardManager = this;
+            }
 
             if (isExit)
             {
@@ -145,7 +180,7 @@ namespace Assets.Scripts
             {
                 angle = 90; // left wall
             }
-            else if (pos.x == (this.CurrentFloor.Size.x - 1) * tileScale)
+            else if (pos.x == (this.CurrentFloor.BoardSize.x - 1) * tileScale)
             {
                 angle = 270; // right wall
             }
@@ -159,70 +194,32 @@ namespace Assets.Scripts
 
         private bool IsWallPosition(int x, int y)
         {
-            var lastMostX =  this.CurrentFloor.Size.x - 1;
-            var lastMostY = this.CurrentFloor.Size.y - 1;
+            var lastMostX =  this.CurrentFloor.BoardSize.x - 1;
+            var lastMostY = this.CurrentFloor.BoardSize.y - 1;
             return (y == 0 || x == 0 || y == lastMostY * tileScale || x == lastMostX * tileScale);
         }
 
-        private void InitBuilding()
+        public Vector2 GetRandomPositionInsideWalls(LevelState state = null)
         {
-            this.TrumpTower = new Building()
+            if (this.CurrentFloor == null && state == null)
             {
-                NumberOfFloors = Constants.NumberOfFloorsInTrumpTower,
-                CurrentFloor = Constants.NumberOfFloorsInTrumpTower
-            };
-        }
-        public Vector3 GetStart()
-        {
-            return CurrentFloor.GetRandomPositionInsideWalls();
-        }
+                throw new Exception("Can't get a random position inside the walls until the board is generated or you pass in state.");
+            }
 
-    }
-
-    public class Building
-    {
-        public int NumberOfFloors { get; set; }
-        public int CurrentFloor { get; set; }        
-
-        public Vector2 GetFloorSize()
-        {
-            // basically, we want the floors to get larger as the player descends
-            // but maybe something cooler could take place
-            var level = this.NumberOfFloors - this.CurrentFloor;
-            return new Vector2(100 - this.CurrentFloor + 10 * level, 100 - this.CurrentFloor + 10 * level);
+            // If I weren't a bastard I wouldn't do this this way io
+            return new Vector2(
+                Unrandom.Range(1 * (state ?? this.CurrentFloor).TileScale, (state ?? this.CurrentFloor).BoardSize.x * (state ?? this.CurrentFloor).TileScale), 
+                Unrandom.Range(1 * (state ?? this.CurrentFloor).TileScale, (state ?? this.CurrentFloor).BoardSize.y * (state ?? this.CurrentFloor).TileScale)
+            );
         }
 
-        public void PlayerDescended()
+        private Vector2 GetRandomPositionAlongWall(LevelState state = null)
         {
-            this.CurrentFloor--;
-        }
-    }
+            if (this.CurrentFloor == null && state == null)
+            {
+                throw new Exception("Can't get a random position until the board is generated or you pass in state.");
+            }
 
-    public class BuildingFloor
-    {
-        public Vector2 Size;
-        public float TileScale { get; }
-        public Transform FloorHolder;
-        public int FloorNumber { get; set; }
-        public Vector2 ExitPosition { get; set; }
-        public Vector2 StartPosition { get; set; }
-        public BuildingFloor(int floorNumber, Vector2 size, float tileScale, Vector2? prevExitPosition = null)
-        {
-            this.Size = size;
-            this.TileScale = tileScale;
-            this.FloorNumber = floorNumber;
-            this.ExitPosition = this.GetRandomPositionAlongWall();
-            this.StartPosition = prevExitPosition ?? GetRandomPositionInsideWalls();
-            this.FloorHolder = new GameObject($"BuildingFloor-{floorNumber}").transform;
-        }
-
-        public Vector2 GetRandomPositionInsideWalls()
-        {
-            return new Vector2(Unrandom.Range(1 * TileScale, this.Size.x * TileScale), Unrandom.Range(1 * TileScale, this.Size.y * TileScale));
-        }
-
-        private Vector2 GetRandomPositionAlongWall()
-        {
             int x;
             var xType = Unrandom.Range(0, 3);
             if (xType == 0)
@@ -231,28 +228,79 @@ namespace Assets.Scripts
             }
             else if (xType == 1)
             {
-                x = (int)this.Size.x - 1; // right wall
+                x = (int)(state ?? this.CurrentFloor).BoardSize.x - 1; // right wall
             }
             else
             {
-                x = (int)Unrandom.Range(1, this.Size.x - 2); // top or bottom walls from 0 -> x avoiding corners
+                x = (int)Unrandom.Range(1, (state ?? this.CurrentFloor).BoardSize.x - 2); // top or bottom walls from 0 -> x avoiding corners
             }
 
-            int y; 
-            if (x == 0 || x == this.Size.x - 1)
+            int y;
+            if (x == 0 || x == (state ?? this.CurrentFloor).BoardSize.x - 1)
             {
                 // If 'x' is constrained to the left or right walls then y is free to spread along its range
-                y = (int)Unrandom.Range(1, this.Size.y - 2); // top or bottom walls from 0 -> y avoiding corners
+                y = (int)Unrandom.Range(1, (state ?? this.CurrentFloor).BoardSize.y - 2); // top or bottom walls from 0 -> y avoiding corners
             }
             else
             {
                 // otherwise, 'x' is free, so y is constrained
-                y = Unrandom.Range(0, 2) > 0 ? (int)this.Size.y - 1 : 0;
+                y = Unrandom.Range(0, 2) > 0 ? (int)(state ?? this.CurrentFloor).BoardSize.y - 1 : 0;
             }
-            var result = new Vector2(x * TileScale, y * TileScale);
+            var result = new Vector2(x * (state ?? this.CurrentFloor).TileScale, y * (state ?? this.CurrentFloor).TileScale);
             return result;
         }
 
-       
+        private void InitBuilding()
+        {            
+            this.TrumpTower = new Building()
+            {
+                NumberOfFloors = Constants.NumberOfFloorsInTrumpTower,
+                CurrentFloorNumber = Constants.NumberOfFloorsInTrumpTower
+            };
+        }
+
+        public Vector3 GetStart()
+        {
+            return GetRandomPositionInsideWalls();
+        }
+    }
+
+    public class LevelState
+    {        
+        public LevelState(int floorNumber, float tileScale, Vector2 size)
+        {
+            this.BoardSize = size;
+            this.TileScale = tileScale;
+            this.FloorNumber = floorNumber;
+            this.FloorHolder = new GameObject($"BuildingFloor-{this.FloorNumber}").transform;
+        }       
+        public Dictionary<Vector2, GameObject> QueuedTiles { get; set; } = new Dictionary<Vector2, GameObject>();
+        public Vector2 ExitPosition { get; set; }
+        public Vector2 StartPosition { get; set; }
+        public int NumSpawners { get; internal set; }
+        public int SpawnersDestroyed { get; internal set; }
+        public int FloorNumber { get; set; }
+        public float TileScale { get; set; }
+        public Vector2 BoardSize { get; set; }
+        public Transform FloorHolder;
+    }
+
+    public class Building
+    {
+        public int NumberOfFloors { get; set; }
+        public int CurrentFloorNumber { get; set; }        
+
+        public Vector2 GetFloorSize()
+        {
+            // basically, we want the floors to get larger as the player descends
+            // but maybe something cooler could take place
+            var level = this.NumberOfFloors - this.CurrentFloorNumber;
+            return new Vector2(100 - this.CurrentFloorNumber + 10 * level, 100 - this.CurrentFloorNumber + 10 * level);
+        }
+
+        public void PlayerDescended()
+        {
+            this.CurrentFloorNumber--;
+        }
     }
 }
