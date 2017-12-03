@@ -95,35 +95,35 @@ namespace Assets.Scripts
         {
             GameObject tile = null;
             var isExit = false;
-            var msg = "";
+            //var msg = "";
             if (IsWallPosition((int)pos.x, (int)pos.y))
             {
                 if (pos.x == this.CurrentFloor.ExitPosition.x && pos.y == this.CurrentFloor.ExitPosition.y)
                 {
-                    msg = "exit";
+                    //msg = "exit";
                     tile = ExitTile;
                     isExit = true;
                 }
                 else
                 {
-                    msg = "rnd wal";
+                    //msg = "rnd wal";
                     tile = this.WallTiles.RandomElement();
                 }
             }
             else if (state.QueuedTiles.ContainsKey(pos))
             {
-                msg = "queued";
+                //msg = "queued";
                 // Constructing some sort of group of related tiles
                 tile = state.QueuedTiles[pos];
             }
             else
             {
-                msg = "floor";
+                //msg = "floor";
                 // Floor tiles
                 tile = this.FloorTiles.RandomElement();
             }
 
-            Debug.LogError(msg);
+            //Debug.LogError(msg);
             GameObject result = Instantiate(tile, new Vector3(pos.x, pos.y, 0f), Quaternion.identity) as GameObject;
 
             if (isExit)
