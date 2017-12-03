@@ -21,9 +21,12 @@ GameObject:
   - component: {fileID: 4654289046663354}
   - component: {fileID: 212014564605950224}
   - component: {fileID: 114717952430657272}
-  m_Layer: 0
+  - component: {fileID: 61528843999092128}
+  - component: {fileID: 114107305551755376}
+  - component: {fileID: 114797946472904190}
+  m_Layer: 12
   m_Name: ZombieSpawner
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41,6 +44,44 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &61528843999092128
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1547084113145162}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.64, y: 0.64}
+    newSize: {x: 0.64, y: 0.64}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.64, y: 0.64}
+  m_EdgeRadius: 0
+--- !u!114 &114107305551755376
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1547084113145162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc2999fcea302fa49beeea469b05a298, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PoolName: Zombie1
+  PointValue: 10
 --- !u!114 &114717952430657272
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -55,6 +96,19 @@ MonoBehaviour:
   ZombieSpawnerName: Zombie1
   PreSpawnAmount: 10
   SpawnSpeed: 3
+--- !u!114 &114797946472904190
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1547084113145162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f381458bd2c6d74f9c54742c12b75e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 50
+  DamageReduction: 1
 --- !u!212 &212014564605950224
 SpriteRenderer:
   m_ObjectHideFlags: 1

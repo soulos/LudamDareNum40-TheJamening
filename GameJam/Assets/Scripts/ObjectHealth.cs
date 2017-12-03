@@ -12,13 +12,13 @@ public class ObjectHealth : MonoBehaviour
     private float currentHealth = 100;
 
     public float DamageReduction = 0;
-    
-	// Use this for initialization
-	void Start ()
-	{
-	    currentHealth = MaxHealth;
-	}
-	
+
+    // Use this for initialization
+    void Start()
+    {
+        currentHealth = MaxHealth;
+    }
+
 
     void OnCollisionEnter2D(Collision2D col)
     {
@@ -26,40 +26,33 @@ public class ObjectHealth : MonoBehaviour
         {
             // take damage from bullet
             Projectile proj = col.collider.gameObject.GetComponent<Projectile>();
-            if (proj!= null)
+            if (proj != null)
             {
-                
+
                 var damage = DamageReduction * proj.Damage;
                 currentHealth -= (int)damage * DamageReduction;
-                Debug.LogError($"{col.collider.gameObject.tag}: {currentHealth}");
                 var reflectiveObject = gameObject.GetComponent<ReflectiveObject>();
                 if (reflectiveObject != null)
                 {
                     reflectiveObject.Reflect(col.contacts[0], col.collider.transform);
                 }
 
-                //else
-                //{
-                    ObjectPoolingManager.DestroyPooledObject("Bullets", col.collider.transform);
-                    if (currentHealth <= 0)
+                ObjectPoolingManager.DestroyPooledObject("Bullets", col.collider.transform);
+                if (currentHealth <= 0)
+                {
+
+                    // player died of lead poisoning
+                    // play death anim then change state -- look at Animation events
+                    if (gameObject.CompareTag("Player"))
                     {
-                       
-                        // player died of lead poisoning
-                        // play death anim then change state -- look at Animation events
-                        if (gameObject.CompareTag("Player"))
-                        {
-                            GameManager.ChangeState(GameState.DiedBullet);
-                        }
-                        else if (gameObject.CompareTag("Enemy"))
-                        {
-                           gameObject.GetComponent<EnemyDie>().Die();
-                        }
+                        GameManager.ChangeState(GameState.DiedBullet);
                     }
-                //}
-
-
+                    else if (gameObject.CompareTag("Enemy"))
+                    {
+                        gameObject.GetComponent<EnemyDie>().Die();
+                    }
+                }
             }
-
         }
         else if (col.collider.gameObject.layer == LayerMask.NameToLayer("Consumable"))
         {
@@ -69,7 +62,7 @@ public class ObjectHealth : MonoBehaviour
         {
             // take damage from zombies
         }
-    
+
     }
 
     public float HealthPercent()
