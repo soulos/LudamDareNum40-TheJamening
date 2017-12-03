@@ -28,7 +28,7 @@ namespace Assets.Scripts
             this.player.SetActive(false);
             // TODO: Fade to black 
             this.boardManager.GenerateFloor();
-            this.player.transform.position = this.boardManager.GetOffsetToPositionWall(boardManager.CurrentFloor.StartPosition, false);
+            this.player.transform.position = boardManager.CurrentFloor.StartPosition;
             this.player.SetActive(true);
         }
     } 
