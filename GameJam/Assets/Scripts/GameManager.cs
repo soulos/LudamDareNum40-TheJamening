@@ -11,19 +11,19 @@ public class GameManager : MonoBehaviour
 
     private static GameState currentState = GameState.Startup;
 
-    private BoardManager BoardScript;
+    
 
     private static int currentScore = 0;
 
     void Awake()
     {
         DontDestroyOnLoad(this);
-        this.BoardScript = this.GetComponent<BoardManager>();
+        
     }
 
 	// Use this for initialization
 	void Start () {
-        this.BoardScript.GenerateFloor();
+        
     }
     
     // Update is called once per frame

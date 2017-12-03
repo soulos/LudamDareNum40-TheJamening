@@ -22,7 +22,7 @@ namespace Assets.Scripts
         public GameObject[] InteractableTiles;
         public GameObject ExitTile;
         public BuildingFloor CurrentFloor;
-
+        public float tileScale = 2f;
         public void Awake()
         {
             this.InitBuilding();
@@ -42,7 +42,7 @@ namespace Assets.Scripts
             {
                 for (int y = 0; y < this.CurrentFloor.Size.y; y++)
                 {
-                    var tile = this.SelectTileForPosition(new Vector2(x, y), state);
+                    var tile = this.SelectTileForPosition(new Vector2(x* tileScale, y * tileScale), state);
                     tile.transform.SetParent(this.CurrentFloor.FloorHolder);
                 }
             }
@@ -138,9 +138,9 @@ namespace Assets.Scripts
 
         private bool IsWallPosition(int x, int y)
         {
-            var lastMostX = this.CurrentFloor.Size.x - 1;
+            var lastMostX =  this.CurrentFloor.Size.x - 1;
             var lastMostY = this.CurrentFloor.Size.y - 1;
-            return (y == 0 || x == 0 || y == lastMostY || x == lastMostX);
+            return (y == 0 || x == 0 || y == lastMostY * tileScale || x == lastMostX * tileScale);
         }
 
         private void InitBuilding()
