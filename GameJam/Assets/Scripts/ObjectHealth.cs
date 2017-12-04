@@ -56,7 +56,10 @@ public class ObjectHealth : MonoBehaviour
             Projectile proj = col.collider.gameObject.GetComponent<Projectile>();
             if (proj != null)
             {
-
+                if (gameObject.CompareTag("Player"))
+                {
+                    GetComponent<AudioSource>().Play();
+                }
                 var damage = DamageReduction * proj.Damage;
                 currentHealth -= (int)damage * DamageReduction;
                 var reflectiveObject = gameObject.GetComponent<ReflectiveObject>();

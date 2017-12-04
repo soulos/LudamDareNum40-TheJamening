@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class ZombieMoveController : MonoBehaviour
@@ -28,6 +27,7 @@ public class ZombieMoveController : MonoBehaviour
     {
         if (col.collider.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            GetComponent<AudioSource>().Play();
             var health = col.collider.gameObject.GetComponent<ObjectHealth>();
             health.TakeDamage(DamageDone);
         }

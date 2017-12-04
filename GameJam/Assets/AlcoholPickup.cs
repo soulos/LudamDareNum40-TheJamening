@@ -23,6 +23,7 @@ public class AlcoholPickup : MonoBehaviour
         }
         else if (col.gameObject.CompareTag("Player"))
         {
+            GetComponent<AudioSource>().Play();
             // drink
             ObjectPoolingManager.DestroyPooledObject(PoolName, transform);
             // increase health

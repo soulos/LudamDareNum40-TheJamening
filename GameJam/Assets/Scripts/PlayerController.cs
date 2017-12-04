@@ -70,6 +70,7 @@ public class PlayerController : MonoBehaviour
 
     void SpawnForwardBullet()
     {
+        GetComponent<AudioSource>().Play();
         ObjectPoolingManager.GetGameObject("Bullets", transform.position + transform.up * 2, transform.rotation);
     }
 
@@ -91,6 +92,7 @@ public class PlayerController : MonoBehaviour
             var startAngle = 0f - (bullets / 2.0f * DispersionAngle);
             for (int loop = 0; loop < bullets; loop++)
             {
+                GetComponent<AudioSource>().Play();
                 var bullet = ObjectPoolingManager.GetGameObject("Bullets", transform.position + transform.up *2, transform.rotation);
                 if (bullet != null)
                 {

@@ -20,6 +20,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4265300256237674}
   - component: {fileID: 212848194488862862}
+  - component: {fileID: 114626082591902524}
   m_Layer: 0
   m_Name: BloodSplatter1
   m_TagString: Untagged
@@ -40,6 +41,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &114626082591902524
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1895387545677860}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0dd696f4ae6ece244850919e11d91b82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeSpeed: 1
+  sprite: {fileID: 0}
 --- !u!212 &212848194488862862
 SpriteRenderer:
   m_ObjectHideFlags: 1

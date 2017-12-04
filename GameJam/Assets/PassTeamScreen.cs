@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PassTeamScreen : MonoBehaviour {
+public class PassTeamScreen : MonoBehaviour
+{
 
+    public string SceneToLoad;
 	// Use this for initialization
 	void Start () {
 		
@@ -14,7 +16,7 @@ public class PassTeamScreen : MonoBehaviour {
 	void Update () {
 	    if (Input.anyKey)
 	    {
-	        SceneManager.LoadScene("Startup");
+	        SceneManager.LoadScene(SceneToLoad);
 	    }
 		
 	}

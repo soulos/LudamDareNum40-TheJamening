@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework.Constraints;
+
 using UnityEngine;
 
 public class ZombieSpawner : MonoBehaviour
@@ -28,6 +28,7 @@ public class ZombieSpawner : MonoBehaviour
         // pick a random direction and spit the item out
         Vector3 spawnPoint = GetRandomPoint();
         ObjectPoolingManager.GetGameObject(ZombieSpawnerName, transform.position + spawnPoint, Quaternion.AngleAxis(0,Vector3.forward));
+        GetComponent<AudioSource>().Play();
 
     }
 
