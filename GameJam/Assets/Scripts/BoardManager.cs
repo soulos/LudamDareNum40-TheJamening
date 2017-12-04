@@ -24,7 +24,39 @@ namespace Assets.Scripts
         public GameObject[] EnemySpawnTiles;
         public GameObject ExitTile;
         public GameObject WinConditionTile;
+        public GameObject[] AlcoholTiles;
         public Dictionary<Vector2, GameObject> TilesByPosition { get; set; } = new Dictionary<Vector2, GameObject>();
+
+        float nextAlcoholSpawnInterval = 2f;
+        private void Update()
+        {
+            nextAlcoholSpawnInterval -= Time.deltaTime;
+            if (nextAlcoholSpawnInterval <= 0)
+            {
+                nextAlcoholSpawnInterval = Unrandom.Range(2, 10);
+                this.SpawnAlcohol();
+            }
+        }
+
+        private void SpawnAlcohol()
+        {
+            var length = TilesByPosition.Values.Count;
+            GameObject randomTile;
+            do
+            {
+                randomTile = TilesByPosition.Values.RandomElement();
+                if (randomTile.tag == "Floor")
+                {
+                    var pos = randomTile.transform.position;
+                    var alcoholTile = this.AlcoholTiles.RandomElement();
+                    GameObject result = Instantiate(alcoholTile, new Vector3(pos.x, pos.y, 0f), Quaternion.identity) as GameObject;
+                }
+                else
+                {
+                    randomTile = null;
+                }
+            } while (randomTile == null);
+        }
 
         internal void SomethingDied(Transform thing)
         {

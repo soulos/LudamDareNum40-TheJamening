@@ -62,4 +62,7 @@ MonoBehaviour:
   ExitTile: {fileID: 1296188180218602, guid: 85de21a2f80d7f444a12476c03cb6b96, type: 2}
   WinConditionTile: {fileID: 1198120030715546, guid: 45e7c1317106700429fa130a68f88c7f,
     type: 2}
+  AlcoholTiles:
+  - {fileID: 1029219110681124, guid: e0b37699c1bda794aa1ce6aaca835499, type: 2}
+  - {fileID: 1235074169706386, guid: fb923b49beca92341b9d33198d8bd453, type: 2}
   tileScale: 2

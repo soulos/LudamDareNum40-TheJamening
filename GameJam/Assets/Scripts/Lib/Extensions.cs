@@ -9,18 +9,18 @@ namespace Assets.Scripts.Lib
 {
     public static class Extensions
     {
-        public static T RandomElement<T>(this T[] arr)
+        public static T RandomElement<T>(this ICollection<T> arr)
         {
-            if (arr == null || arr.Length == 0)
+            if (arr == null || arr.Count == 0)
             {
                 return default(T);
             }
-            else if (arr.Length == 1)
+            else if (arr.Count == 1)
             {
-                return arr[0];
+                return arr.ElementAt(0);
             }
 
-            return arr[Unrandom.Range(0, arr.Length)];
+            return arr.ElementAt(Unrandom.Range(0, arr.Count));
         }
     }
 }
