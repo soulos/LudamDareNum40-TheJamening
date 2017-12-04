@@ -24,7 +24,6 @@ public class UIUpdateMainGame : MonoBehaviour
 
     public void UpdateHealthAndAlcoholMeters(float healthValue, float alcoholValue)
     {
-        Debug.Log($"Health: {healthValue}  Alcohol: {alcoholValue}");
         health.fillAmount = healthValue;
         alcohol.fillAmount = alcoholValue;
     }
