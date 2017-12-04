@@ -11,6 +11,8 @@ namespace Assets.Scripts
         private BoardManager boardManager;
         private GameObject player;
         private PlayerController playerController;
+
+        private bool isOpen = false;
         // Use this for initialization
         void Start()
         {
@@ -20,6 +22,10 @@ namespace Assets.Scripts
             playerController = player.GetComponent<PlayerController>();
         }
 
+        public void SetExitOpen(bool open)
+        {
+            isOpen = open;
+        }
         // Update is called once per frame
         void Update()
         {
@@ -28,13 +34,16 @@ namespace Assets.Scripts
 
         void OnCollisionEnter2D(Collision2D col)
         {
-            this.player.SetActive(false);
-            this.playerController.LevelWin();
-            Thread.Sleep(1000);
-            // TODO: Fade to black 
-            this.boardManager.GenerateFloor();
-            this.player.transform.position = boardManager.CurrentFloor.StartPosition;
-            this.player.SetActive(true);
+            if (isOpen && col.collider.gameObject.CompareTag("Player"))
+            {
+                this.player.SetActive(false);
+                this.playerController.LevelWin();
+                Thread.Sleep(1000);
+                // TODO: Fade to black 
+                this.boardManager.GenerateFloor();
+                this.player.transform.position = boardManager.CurrentFloor.StartPosition;
+                this.player.SetActive(true);
+            }
         }
     } 
 }

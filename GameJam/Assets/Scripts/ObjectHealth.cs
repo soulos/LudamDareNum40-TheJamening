@@ -38,6 +38,15 @@ public class ObjectHealth : MonoBehaviour
             currentHealth = MaxHealth;
     }
 
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        if (currentHealth <= 0)
+        {
+            GameManager.ChangeState(GameState.DiedZombie);
+        }
+    }
+
 
     void OnCollisionEnter2D(Collision2D col)
     {
@@ -73,25 +82,19 @@ public class ObjectHealth : MonoBehaviour
                            gameObject.GetComponent<EnemyDie>().Die();
                         }
                     }
-                    else if (currentHealth <= 0 && currentAlcohol >= MaxAlcohol)
-                    {
-                        if (gameObject.CompareTag("Player"))
-                        {
-                            GameManager.ChangeState(GameState.DiedAlcohol);
-                        }
-                    }
+                   
+                }
+            }
+            else if (currentHealth <= 0 && currentAlcohol >= MaxAlcohol)
+            {
+                if (gameObject.CompareTag("Player"))
+                {
+                    GameManager.ChangeState(GameState.DiedAlcohol);
                 }
             }
 
         }
-        else if (col.collider.gameObject.layer == LayerMask.NameToLayer("Consumable"))
-        {
-            // get the consumable object and apply the effects   
-        }
-        else if (col.collider.gameObject.layer == LayerMask.NameToLayer("Badguys"))
-        {
-            // take damage from zombies
-        }
+        
 
     }
 

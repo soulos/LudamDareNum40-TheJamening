@@ -38,7 +38,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1071913542179356}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 62.67241, y: 53.23661, z: 0}
+  m_LocalPosition: {x: 35.05086, y: 51.98925, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -82,6 +82,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PoolName: Zombie1
   PointValue: 10
+  boardManager: {fileID: 0}
 --- !u!114 &114399666189062168
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -94,6 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 20
+  MaxAlcohol: 100
   DamageReduction: 1
 --- !u!114 &114598183224164990
 MonoBehaviour:
@@ -107,6 +109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PointValue: 10
+  DamageDone: 1
   Speed: 2
 --- !u!212 &212775453401639660
 SpriteRenderer:

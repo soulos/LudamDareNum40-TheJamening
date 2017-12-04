@@ -49,7 +49,7 @@ namespace Assets.Scripts
             GameObject exit;
             if (this.TilesByPosition.TryGetValue(this.CurrentFloor.ExitPosition, out exit))
             {
-                exit.GetComponent<BoxCollider2D>().enabled = false;
+                exit.GetComponent<LevelWin>().SetExitOpen(true);
             }
         }
 
@@ -136,6 +136,7 @@ namespace Assets.Scripts
                 {
                     //msg = "exit";
                     tile = ExitTile;
+                    tile.GetComponent<LevelWin>().SetExitOpen(false);
                     isExit = true;
                 }
                 else
