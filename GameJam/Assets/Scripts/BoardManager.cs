@@ -83,10 +83,10 @@ namespace Assets.Scripts
         {
             // populate some configurable sparsity of patterns of tile placement, like cubicle groups
             // never place groups of objects along the walls in such a way that they block the exit or interfere with the starting position
-            var state = new LevelState(this.CurrentFloor?.FloorNumber - 1 ?? this.TrumpTower.NumberOfFloors, tileScale, size);
+            var state = new LevelState(previousState?.FloorNumber - 1 ?? this.TrumpTower.NumberOfFloors, tileScale, size);
             state.ExitPosition = this.GetRandomPositionAlongWall(state);
             state.StartPosition = GetRandomPositionInsideWalls(state);
-            state.NumSpawners = this.TrumpTower.NumberOfFloors - this.TrumpTower.CurrentFloorNumber + 1;
+            state.NumSpawners = this.TrumpTower.NumberOfFloors - state.FloorNumber + 1;
             for (int i = 0; i < state.NumSpawners; i++)
             {
                 var spawner = this.EnemySpawnTiles.RandomElement();

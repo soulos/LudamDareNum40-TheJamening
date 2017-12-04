@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     public float ShotDelay = 1.0f;
     public ObjectHealth health;
     private float shotTimer = 0;
+    private int level = 1;
 	// Use this for initialization
     
 	void Start ()
@@ -35,6 +37,16 @@ public class PlayerController : MonoBehaviour
             Shoot();
 	    }
 	}
+
+    internal void LevelWin()
+    {
+        this.level++;
+        if (this.level % 2 == 0)
+        {
+            this.BulletLevel++;
+            this.ShotDelay -= (this.ShotDelay * .05f); // 5% quicker
+        }
+    }
 
     void RotatePlayer(float rotation)
     {
