@@ -1,0 +1,52 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.Remoting.Lifetime;
+using UnityEngine;
+
+public class Projectile : MonoBehaviour
+{
+
+    public float Speed = 10;
+    public float Damage = 10;
+    public float LifespanInSeconds = 5f;
+    private bool isDead = false;
+
+    public float maxRebounds = 5f;
+
+    private float lifetime = 0;
+	// Use this for initialization
+	void Start () {
+		
+	}
+	
+	// Update is called once per frame
+	void FixedUpdate () {
+	    if (isActiveAndEnabled)
+	    {
+	        transform.Translate(Vector3.up * Speed * Time.deltaTime);
+	    }
+
+	    if (BulletDied())
+	    {
+	        ObjectPoolingManager.DestroyPooledObject("Bullets", transform);
+	    }
+		
+	}
+
+    bool BulletDied()
+    {
+        lifetime += Time.deltaTime;
+        if (lifetime >= LifespanInSeconds)
+        {
+            lifetime = 0;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    
+    
+}

@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - EnemySpawner
+  - LevelWin
+  - Floor
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Bullet
+  - Interactive
+  - BlockingLayer
+  - Floor
+  - BadGuys
+  - Player
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Floor
+    uniqueID: 3136116285
+    locked: 0
+  - name: Units
+    uniqueID: 670398915
+    locked: 0
+  - name: Blood
+    uniqueID: 2572979721
+    locked: 0
+  - name: Bullet
+    uniqueID: 1032345237
+    locked: 0
+  - name: Characters
+    uniqueID: 1317139225
+    locked: 0
+  - name: Spawner
+    uniqueID: 440110185
+    locked: 0

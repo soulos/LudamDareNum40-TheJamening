@@ -1,0 +1,268 @@
+fileFormatVersion: 2
+guid: 96989d42790bddd4cb8327583f0cb29c
+timeCreated: 1512314210
+licenseType: Pro
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Strump_0
+    21300002: Strump_1
+    21300004: Strump_2
+    21300006: Strump_3
+    21300008: Strump_4
+    21300010: Strump_5
+    21300012: Strump_6
+  externalObjects: {}
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 0
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 256
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 256
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Android
+    maxTextureSize: 256
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: WebGL
+    maxTextureSize: 256
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 2
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Strump_0
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 149
+        width: 30
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Strump_1
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 149
+        width: 30
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Strump_2
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 149
+        width: 30
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Strump_3
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 85
+        width: 30
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Strump_4
+      rect:
+        serializedVersion: 2
+        x: 82
+        y: 85
+        width: 30
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Strump_5
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 85
+        width: 30
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Strump_6
+      rect:
+        serializedVersion: 2
+        x: 18
+        y: 21
+        width: 30
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+    outline:
+    - - {x: -70, y: -58}
+      - {x: -79, y: -60}
+      - {x: -80, y: -64}
+      - {x: -80, y: -70}
+      - {x: -76, y: -73}
+      - {x: -66, y: -77}
+      - {x: -56, y: -77}
+      - {x: -46, y: -70}
+      - {x: -46, y: -62}
+      - {x: -52, y: -58}
+    - - {x: -80, y: 6}
+      - {x: -80, y: -5}
+      - {x: -74, y: -13}
+      - {x: -53, y: -13}
+      - {x: -46, y: -8}
+      - {x: -46, y: 6}
+    - - {x: -13, y: 6}
+      - {x: -16, y: 4}
+      - {x: -16, y: -6}
+      - {x: -9, y: -13}
+      - {x: 12, y: -13}
+      - {x: 18, y: -10}
+      - {x: 18, y: 1}
+      - {x: 12, y: 6}
+    - - {x: 81, y: 4}
+      - {x: 78, y: 6}
+      - {x: 55, y: 6}
+      - {x: 48, y: 3}
+      - {x: 48, y: -6}
+      - {x: 60, y: -13}
+      - {x: 70, y: -13}
+      - {x: 80, y: -7}
+      - {x: 82, y: -6}
+      - {x: 82, y: 0}
+    - - {x: -53, y: 70}
+      - {x: -70, y: 70}
+      - {x: -79, y: 68}
+      - {x: -80, y: 65}
+      - {x: -80, y: 56}
+      - {x: -70, y: 51}
+      - {x: -52, y: 51}
+      - {x: -47, y: 56}
+      - {x: -46, y: 60}
+      - {x: -46, y: 65}
+    - - {x: -11, y: 70}
+      - {x: -16, y: 65}
+      - {x: -16, y: 58}
+      - {x: -8, y: 51}
+      - {x: 8, y: 51}
+      - {x: 18, y: 55}
+      - {x: 18, y: 70}
+    - - {x: 50, y: 70}
+      - {x: 48, y: 66}
+      - {x: 48, y: 58}
+      - {x: 59, y: 51}
+      - {x: 73, y: 51}
+      - {x: 80, y: 52}
+      - {x: 82, y: 59}
+      - {x: 82, y: 64}
+      - {x: 71, y: 70}
+    physicsShape: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
